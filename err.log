@@ -1,0 +1,380 @@
+INÍCIO: Teste Criar
+FIM: Teste Criar
+
+INÍCIO: Testes Inserir
+	Teste Inserir - Caso Normal
+chave-0 0
+chave-1 1
+chave-2 2
+chave-3 3
+chave-4 4
+chave-5 5
+chave-6 6
+chave-7 7
+	Teste Inserir - Colisão
+abba 16
+bbaa 16
+	Teste Inserir - Caso Atualizar
+chave 1
+chave 1
+FIM: Testes Inserir
+
+INÍCIO: Testes Remover
+	Teste Remover - Caso Normal
+abba 16
+cdefg 12
+baee 6
+	Teste Remover - Sucessivas
+chave-0 0
+cheva-0 0
+hceva-0 0
+chave-3 3
+cheva-3 3
+hceva-3 3
+chave-6 6
+cheva-6 6
+	Teste Remover - Colisão
+abba 16
+bbaa 16
+baba 16
+FIM: Testes Remover
+
+INÍCIO: Testes Buscar
+	Teste Buscar - Caso Normal
+C1 12
+C2 0
+C3 1
+C4 2
+C5 3
+acehv 12
+	Teste Buscar - Com Remoções
+chave 9
+echav 9
+vecha 9
+avech 9
+havec 9
+acehv 9
+FIM: Testes Buscar
+
+INÍCIO: Testes Tudo
+chave-0 81
+cheva-0 81
+hceva-0 81
+chave-3 84
+cheva-3 84
+hceva-3 84
+chave-6 87
+cheva-6 87
+hceva-6 87
+chave-9 90
+cheva-9 90
+hceva-9 90
+chave-12 132
+cheva-12 132
+hceva-12 132
+chave-15 135
+cheva-15 135
+hceva-15 135
+chave-18 138
+cheva-18 138
+hceva-18 138
+chave-21 132
+cheva-21 132
+hceva-21 132
+chave-24 135
+cheva-24 135
+hceva-24 135
+chave-27 138
+cheva-27 138
+hceva-27 138
+chave-30 132
+cheva-30 132
+hceva-30 132
+chave-33 135
+cheva-33 135
+hceva-33 135
+chave-36 138
+cheva-36 138
+hceva-36 138
+chave-39 141
+cheva-39 141
+hceva-39 141
+chave-42 135
+cheva-42 135
+hceva-42 135
+chave-45 138
+cheva-45 138
+hceva-45 138
+chave-48 141
+cheva-48 141
+chave-0 81
+cheva-0 81
+hceva-0 81
+chave-3 84
+cheva-3 84
+hceva-3 84
+chave-6 87
+cheva-6 87
+hceva-6 87
+chave-9 90
+cheva-9 90
+hceva-9 90
+chave-12 132
+cheva-12 132
+hceva-12 132
+chave-15 135
+cheva-15 135
+hceva-15 135
+chave-18 138
+cheva-18 138
+hceva-18 138
+chave-21 132
+cheva-21 132
+hceva-21 132
+chave-24 135
+cheva-24 135
+hceva-24 135
+chave-27 138
+cheva-27 138
+hceva-27 138
+chave-30 132
+cheva-30 132
+hceva-30 132
+chave-33 135
+cheva-33 135
+hceva-33 135
+chave-36 138
+cheva-36 138
+hceva-36 138
+chave-39 141
+cheva-39 141
+hceva-39 141
+chave-42 135
+cheva-42 135
+hceva-42 135
+chave-45 138
+cheva-45 138
+hceva-45 138
+chave-48 141
+cheva-48 141
+chave-0
+chave-1
+chave-2
+chave-3
+chave-4
+chave-5
+chave-6
+chave-7
+chave-8
+chave-9
+chave-10
+chave-11
+chave-12
+chave-13
+chave-14
+chave-15
+chave-16
+chave-17
+chave-18
+chave-19
+chave-20
+chave-21
+chave-22
+chave-23
+chave-24
+chave-25
+chave-26
+chave-27
+chave-28
+chave-29
+chave-30
+chave-31
+chave-32
+chave-33
+chave-34
+chave-35
+chave-36
+chave-37
+chave-38
+chave-39
+Chave erro: chave-39
+	*ERRO - Teste Tudo: Não removeu item corretamente.
+0: []
+1: []
+2: []
+3: []
+4: []
+5: []
+6: []
+7: []
+8: []
+9: []
+10: []
+11: []
+12: []
+13: []
+14: []
+15: []
+16: []
+17: []
+18: []
+19: []
+20: []
+21: []
+22: []
+23: []
+24: []
+25: []
+26: []
+27: []
+28: []
+29: []
+30: []
+31: []
+32: []
+33: []
+34: []
+35: []
+36: []
+37: []
+38: []
+39: []
+40: []
+41: []
+42: []
+43: []
+44: []
+45: []
+46: []
+47: []
+48: []
+49: []
+50: []
+51: []
+52: []
+53: []
+54: []
+55: []
+56: []
+57: []
+58: []
+59: []
+60: []
+61: []
+62: []
+63: []
+64: []
+65: []
+66: []
+67: []
+68: []
+69: []
+70: []
+71: []
+72: []
+73: []
+74: []
+75: []
+76: []
+77: []
+78: []
+79: []
+80: []
+81: DELETED
+82: cheva-0:NovoConteudo1
+83: hceva-0:NovoConteudo2
+84: DELETED
+85: cheva-3:NovoConteudo4
+86: hceva-3:NovoConteudo5
+87: DELETED
+88: cheva-6:NovoConteudo7
+89: hceva-6:NovoConteudo8
+90: DELETED
+91: cheva-9:NovoConteudo10
+92: hceva-9:NovoConteudo11
+93: []
+94: []
+95: []
+96: []
+97: []
+98: []
+99: []
+100: []
+101: []
+102: []
+103: []
+104: []
+105: []
+106: []
+107: []
+108: []
+109: []
+110: []
+111: []
+112: []
+113: []
+114: []
+115: []
+116: []
+117: []
+118: []
+119: []
+120: []
+121: []
+122: []
+123: []
+124: []
+125: []
+126: []
+127: []
+128: []
+129: []
+130: []
+131: []
+132: DELETED
+133: cheva-12:NovoConteudo13
+134: hceva-12:NovoConteudo14
+135: DELETED
+136: cheva-15:NovoConteudo16
+137: hceva-15:NovoConteudo17
+138: DELETED
+139: cheva-18:NovoConteudo19
+140: hceva-18:NovoConteudo20
+141: chave-21:NovoConteudo21
+142: cheva-21:NovoConteudo22
+143: hceva-21:NovoConteudo23
+144: chave-24:NovoConteudo24
+145: cheva-24:NovoConteudo25
+146: hceva-24:NovoConteudo26
+147: chave-27:NovoConteudo27
+148: cheva-27:NovoConteudo28
+149: hceva-27:NovoConteudo29
+150: chave-30:NovoConteudo30
+151: cheva-30:NovoConteudo31
+152: hceva-30:NovoConteudo32
+153: chave-33:NovoConteudo33
+154: cheva-33:NovoConteudo34
+155: hceva-33:NovoConteudo35
+156: chave-36:NovoConteudo36
+157: cheva-36:NovoConteudo37
+158: hceva-36:NovoConteudo38
+159: chave-39:NovoConteudo39
+160: cheva-39:NovoConteudo40
+161: hceva-39:NovoConteudo41
+162: chave-42:NovoConteudo42
+163: cheva-42:NovoConteudo43
+164: hceva-42:NovoConteudo44
+165: chave-45:NovoConteudo45
+166: cheva-45:NovoConteudo46
+167: hceva-45:NovoConteudo47
+168: chave-48:NovoConteudo48
+169: cheva-48:NovoConteudo49
+170: []
+171: []
+172: []
+173: []
+174: []
+175: []
+176: []
+FIM: Testes Tudo
+

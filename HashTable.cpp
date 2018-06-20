@@ -78,18 +78,18 @@ string HashTable::get(const string key)
     int x = 1;
 
     if (this->data[indice] != nullptr){
-        if (this->data[indice] != ENTRY_DELETED){
-            if (this->data[indice]->getKey() == key){
-                return this->data[indice]->getValue();
-            }
+        if (this->data[indice]->getKey() == key){
+            return this->data[indice]->getValue();
         }else{
-            while(this->data[indice] != nullptr && this->data[indice]->getKey() != key){
+            while(this->data[indice] != nullptr){
+                if (this->data[indice] != ENTRY_DELETED){
+                    if (this->data[indice]->getKey() == key) {
+                        return this->data[indice]->getValue();
+                    }
+                }
+
                 indice = (hash(key)+x)%this->getSize();
                 x++;
-            }
-
-            if (this->data[indice]->getKey() == key){
-                return this->data[indice]->getValue();
             }
         }
     }
@@ -119,7 +119,7 @@ bool HashTable::put(const string key, const string value)
             if (key == this->data[indice]->getKey()){
                 this->data[indice] = newEntry;
                 return true;
-            }else if (this->data[indice] == ENTRY_DELETED){
+            }else if (this->data[indice] == ENTRY_DELETED && deletedPosition == nullptr){
                 deletedPosition = this->data[indice];
             }
             indice = (hash(key)+x)%this->getSize();
@@ -154,6 +154,7 @@ bool HashTable::remove(const string key)
     }else{
         if (this->data[indice] != ENTRY_DELETED){
             if (this->data[indice]->getKey() == key){
+                //std::cout << this->data[indice]->getKey() << std::endl;
                 this->data[indice] = ENTRY_DELETED;
                 this->quantity--;
                 return true;
