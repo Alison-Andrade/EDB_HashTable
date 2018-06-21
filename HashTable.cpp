@@ -74,27 +74,47 @@ HashTable::~HashTable()
 string HashTable::get(const string key)
 {
 
-    int indice = hash(key);
-    int x = 1;
+    auto base = this->hash(key);
 
-    if (this->data[indice] != nullptr){
-        if (this->data[indice]->getKey() == key){
-            return this->data[indice]->getValue();
-        }else{
-            while(this->data[indice] != nullptr){
-                if (this->data[indice] != ENTRY_DELETED){
-                    if (this->data[indice]->getKey() == key) {
-                        return this->data[indice]->getValue();
-                    }
-                }
+    for(auto d = 0; d < this->getSize(); ++d)
+    {
+        auto index = (base+d) % this->getSize();
 
-                indice = (hash(key)+x)%this->getSize();
-                x++;
-            }
+        auto entry = this->data[index];
+
+        if( entry == nullptr )
+        {
+            return "";
+        }
+        else if( entry != ENTRY_DELETED && key == entry->getKey() )
+        {
+            return entry->getValue();
         }
     }
 
     return "";
+
+    // int indice = hash(key);
+    // int x = 1;
+
+    // if (this->data[indice] != nullptr){
+    //     if (this->data[indice]->getKey() == key){
+    //         return this->data[indice]->getValue();
+    //     }else{
+    //         while(this->data[indice] != nullptr){
+    //             if (this->data[indice] != ENTRY_DELETED){
+    //                 if (this->data[indice]->getKey() == key) {
+    //                     return this->data[indice]->getValue();
+    //                 }
+    //             }
+
+    //             indice = (hash(key)+x)%this->getSize();
+    //             x++;
+    //         }
+    //     }
+    // }
+
+    // return "";
 }
 
 /**
@@ -104,39 +124,80 @@ string HashTable::get(const string key)
 bool HashTable::put(const string key, const string value)
 {
     
-    HashEntry<string, string>* newEntry = new HashEntry<string, string>(key, value);
-    HashEntry<string, string>* deletedPosition;
+    auto base = this->hash(key);
 
-    int indice = hash(key);
-    int x = 1;
+    int toInsert = -1;
+    for(auto d = 0; d < this->getSize(); ++d)
+    {
+        auto index = (base+d) % this->getSize();
 
-    if (this->data[indice] == nullptr){
-        this->data[indice] = newEntry;
-        this->quantity++;
-        return true;
-    }else {
-        while(this->data[indice] != nullptr && this->data[indice]->getKey() != key){
-            if (key == this->data[indice]->getKey()){
-                this->data[indice] = newEntry;
-                return true;
-            }else if (this->data[indice] == ENTRY_DELETED && deletedPosition == nullptr){
-                deletedPosition = this->data[indice];
+        auto entry = this->data[index];
+
+        if( entry == nullptr )
+        {
+            if( toInsert == -1 )
+            {
+                toInsert = index;
             }
-            indice = (hash(key)+x)%this->getSize();
-            x++;
+            break;
         }
-
-        if (deletedPosition == ENTRY_DELETED){
-            deletedPosition = newEntry;
-            this->quantity++;
+        else if( entry == ENTRY_DELETED )
+        {
+            toInsert = index;
+        }
+        else if( key == entry->getKey() )
+        {
+            entry->setValue(value);
             return true;
         }
-
-        this->data[indice] = newEntry;
-        return true;
     }
 
-    return false;
+    if( toInsert != -1 )
+    {
+        auto newEntry = new HashEntry<string, string>(key, value);
+        this->data[toInsert] = newEntry;
+        ++this->quantity;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+    // HashEntry<string, string>* newEntry = new HashEntry<string, string>(key, value);
+    // HashEntry<string, string>* deletedPosition;
+
+    // int base = hash(key);
+    // int indice(base);
+    // int x = 1;
+
+    // if (this->data[indice] == nullptr){
+    //     this->data[indice] = newEntry;
+    //     this->quantity++;
+    //     return true;
+    // }else {
+    //     while(this->data[indice] != nullptr && this->data[indice]->getKey() != key){
+    //         if (key == this->data[indice]->getKey()){
+    //             this->data[indice] = newEntry;
+    //             return true;
+    //         }else if (this->data[indice] == ENTRY_DELETED && deletedPosition == nullptr){
+    //             deletedPosition = this->data[indice];
+    //         }
+    //         indice = (base+x)%this->getSize();
+    //         x++;
+    //     }
+
+    //     if (deletedPosition == ENTRY_DELETED){
+    //         deletedPosition = newEntry;
+    //         this->quantity++;
+    //         return true;
+    //     }
+
+    //     this->data[indice] = newEntry;
+    //     return true;
+    // }
+
+    // return false;
 
 }
 
@@ -146,34 +207,59 @@ bool HashTable::put(const string key, const string value)
  */
 bool HashTable::remove(const string key)
 {
-    int indice = hash(key);
-    int x = 1;
 
-    if (this->data[indice] == nullptr){
-        return false;
-    }else{
-        if (this->data[indice] != ENTRY_DELETED){
-            if (this->data[indice]->getKey() == key){
-                //std::cout << this->data[indice]->getKey() << std::endl;
-                this->data[indice] = ENTRY_DELETED;
-                this->quantity--;
-                return true;
-            }
-        }else{
-            while(this->data[indice] != nullptr){
-                if (this->data[indice] != ENTRY_DELETED){
-                    if (this->data[indice]->getKey() != key){
-                        indice = (hash(key)+x)%this->getSize();
-                        x++;
-                    }
-                }else{
-                    this->data[indice] = ENTRY_DELETED;
-                    this->quantity--;
-                    return true;
-                }
-            }
+    auto base = this->hash(key);
+
+    for(auto d = 0; d < this->getSize(); ++d)
+    {
+        auto index = (base+d) % this->getSize();
+
+        auto entry = this->data[index];
+
+        if( entry == nullptr )
+        {
+            return false;
+        }
+        else if( entry != ENTRY_DELETED && key == entry->getKey() )
+        {
+            delete this->data[index];
+            this->data[index] = ENTRY_DELETED;   
+            --this->quantity;
+            return true;
         }
     }
+
+    // int base = hash(key);
+    // int indice(base);
+    // int x = 1;
+
+    // if (this->data[indice] == nullptr){
+    //     return false;
+    // }else{
+    //     if (this->data[indice] != ENTRY_DELETED){
+    //         if (this->data[indice]->getKey() == key){
+    //             //std::cout << this->data[indice]->getKey() << std::endl;
+    //             delete this->data[indice];
+    //             this->data[indice] = ENTRY_DELETED;
+    //             this->quantity--;
+    //             return true;
+    //         }
+    //     }else{
+    //         while(this->data[indice] != nullptr){
+    //             if (this->data[indice] != ENTRY_DELETED){
+    //                 if (this->data[indice]->getKey() != key){
+    //                     indice = (hash(key)+x)%this->getSize();
+    //                     x++;
+    //                 }
+    //             }else{
+    //                 delete this->data[indice];
+    //                 this->data[indice] = ENTRY_DELETED;
+    //                 this->quantity--;
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    // }
 
     return false;
 }
