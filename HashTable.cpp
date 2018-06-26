@@ -44,8 +44,7 @@ void HashTable::init()
     for( int i = 0; i < this->getSize(); i++ )
     {
         // Atribui-se nulo às posições da tabela para termos certeza de que estão vazias
-        // O cast na atribuição é só pra ficar explícito o tipo de cada elemento do array
-        this->data[i] = (HashEntry<string, string>*) nullptr;
+        this->data[i] = nullptr;
     }
 }
 
@@ -68,62 +67,56 @@ HashTable::~HashTable()
 
 /**
  Este método deve retornar o 'value' da HashEntry cuja atributo 'key' == parâmetro key.
- Caso contrário, deve retornar string vazia ("").
+ Caso contrário, deve retornar 'nullptr'.
  Quantidade de itens na tabela não é modificada.
  */
 string HashTable::get(const string key)
 {
-
-    auto base = this->hash(key);
-
-    for(auto d = 0; d < this->getSize(); ++d)
+    if(this->isEmpty())
     {
-        auto index = (base+d) % this->getSize();
+        return "";
+    }
+    
+    unsigned long base = hash(key);
 
-        auto entry = this->data[index];
+    string result = "";
+
+    for( auto delta = 0; delta < this->getSize(); delta++)
+    {
+        long index = (base+delta) % this->getSize();
+        HashEntry<string, string>* entry = this->data[index];
 
         if( entry == nullptr )
         {
-            return "";
+            break;
         }
-        else if( entry != ENTRY_DELETED && key == entry->getKey() )
+        else if( entry != ENTRY_DELETED && entry->getKey() == key )
         {
-            return entry->getValue();
+            result = entry->getValue();
+            break;
         }
     }
+    
+    return result;
 
-    return "";
-
-    // int indice = hash(key);
-    // int x = 1;
-
-    // if (this->data[indice] != nullptr){
-    //     if (this->data[indice]->getKey() == key){
-    //         return this->data[indice]->getValue();
-    //     }else{
-    //         while(this->data[indice] != nullptr){
-    //             if (this->data[indice] != ENTRY_DELETED){
-    //                 if (this->data[indice]->getKey() == key) {
-    //                     return this->data[indice]->getValue();
-    //                 }
-    //             }
-
-    //             indice = (hash(key)+x)%this->getSize();
-    //             x++;
-    //         }
-    //     }
-    // }
-
-    // return "";
 }
 
 /**
  Este método deve inserir na tabela um novo HashEntry com 'key' e 'value' recebidos como parâmetros. Neste caso, a quantidade de itens na tabela deve ser incrementada e retorna-se 'true'.
  Caso já exista um HashEntry com atributo 'key' == parâmetro 'key', deve apenas atualizar o atributo 'value' do HashEntry. Neste caso, a quantidade de itens na tabela não é modificada e retorna-se 'true'.
+ Caso nã
  */
 bool HashTable::put(const string key, const string value)
 {
-    
+    if(this->isFull())
+    {
+        return false;
+    }
+    else if( this->getAlpha() >= MAX_ALPHA )
+    {
+        this->expand();
+    }
+
     auto base = this->hash(key);
 
     int toInsert = -1;
@@ -163,42 +156,8 @@ bool HashTable::put(const string key, const string value)
     {
         return false;
     }
-
-    // HashEntry<string, string>* newEntry = new HashEntry<string, string>(key, value);
-    // HashEntry<string, string>* deletedPosition;
-
-    // int base = hash(key);
-    // int indice(base);
-    // int x = 1;
-
-    // if (this->data[indice] == nullptr){
-    //     this->data[indice] = newEntry;
-    //     this->quantity++;
-    //     return true;
-    // }else {
-    //     while(this->data[indice] != nullptr && this->data[indice]->getKey() != key){
-    //         if (key == this->data[indice]->getKey()){
-    //             this->data[indice] = newEntry;
-    //             return true;
-    //         }else if (this->data[indice] == ENTRY_DELETED && deletedPosition == nullptr){
-    //             deletedPosition = this->data[indice];
-    //         }
-    //         indice = (base+x)%this->getSize();
-    //         x++;
-    //     }
-
-    //     if (deletedPosition == ENTRY_DELETED){
-    //         deletedPosition = newEntry;
-    //         this->quantity++;
-    //         return true;
-    //     }
-
-    //     this->data[indice] = newEntry;
-    //     return true;
-    // }
-
-    // return false;
-
+    
+    
 }
 
 /**
@@ -207,6 +166,16 @@ bool HashTable::put(const string key, const string value)
  */
 bool HashTable::remove(const string key)
 {
+    if(this->isEmpty())
+    {
+        return false;
+    }
+    else if( this->getAlpha() <= MIN_ALPHA )
+    {
+        this->reduce();
+    }
+    
+    // implement here
 
     auto base = this->hash(key);
 
@@ -229,38 +198,6 @@ bool HashTable::remove(const string key)
         }
     }
 
-    // int base = hash(key);
-    // int indice(base);
-    // int x = 1;
-
-    // if (this->data[indice] == nullptr){
-    //     return false;
-    // }else{
-    //     if (this->data[indice] != ENTRY_DELETED){
-    //         if (this->data[indice]->getKey() == key){
-    //             //std::cout << this->data[indice]->getKey() << std::endl;
-    //             delete this->data[indice];
-    //             this->data[indice] = ENTRY_DELETED;
-    //             this->quantity--;
-    //             return true;
-    //         }
-    //     }else{
-    //         while(this->data[indice] != nullptr){
-    //             if (this->data[indice] != ENTRY_DELETED){
-    //                 if (this->data[indice]->getKey() != key){
-    //                     indice = (hash(key)+x)%this->getSize();
-    //                     x++;
-    //                 }
-    //             }else{
-    //                 delete this->data[indice];
-    //                 this->data[indice] = ENTRY_DELETED;
-    //                 this->quantity--;
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    // }
-
     return false;
 }
 
@@ -272,9 +209,7 @@ unsigned long HashTable::preHash(const string key)
     unsigned long x = 0;
     for(unsigned int i = 0; i < key.size(); i++)
     {
-        // Não mudar!
-        // Coloquei propositalmente uma versão simples pra facilitar a criação de colisões nos testes!
-        x += key.at(i);
+        x = x*101 + key.at(i);
     }
     return x;
 }
@@ -286,6 +221,70 @@ unsigned long HashTable::hash(const string key)
 {
     unsigned long hashValue = this->preHash(key);
     return hashValue % this->getSize();
+}
+
+void HashTable::expand()
+{
+    int newSize = this->getSize() * 2 + 1;
+    this->resize(newSize);
+}
+
+void HashTable::reduce()
+{
+    int half = this->getSize() / 2;
+    int newSize = half % 2 != 0 ? half : half+1;
+    this->resize(newSize);
+}
+
+void HashTable::resize(int newSize)
+{
+    // SIGA OS COMENTÁRIOS ABAIXO.    
+    
+    // Cria novo array de ponteiros para HashEntry
+    // Coloquei para lembrar de iniciar todas posições com 'nulo'.
+    HashEntry<std::string, string>** newData = new HashEntry<std::string, string>*[newSize];
+    for( int i = 0; i < newSize; i++ )
+    {
+        newData[i] = nullptr;
+    }
+    
+    // Atualize o tamanho da tabela (this->size)
+    
+    // Transifra as entradas válidas que estão no array antigo para o novo
+    // BEGIN-FOR     Percorra cada nó do array antigo
+    //  BEGIN-IF    Se entry é válida
+    //              Insira no Novo Array, tratando possíveis colisões
+    //  END-IF
+    // END-FOR
+    
+    // Delete o antigo array
+    // Atualize o this->data para apontar para o novo array
+    
+    int oldSize = this->size;
+    this->size = newSize;
+
+    for (auto i = 0; i < oldSize; i++){
+        if (this->data[i] != nullptr && this->data[i] != ENTRY_DELETED){
+            auto base = this->hash(this->data[i]->getKey());
+            for (auto j = 0; j < newSize; j++){
+                auto index = (base+j) % newSize;
+                if (newData[index] == nullptr){
+                    newData[index] = this->data[i];
+                    break;
+                }
+            }
+        }
+    }
+
+    delete [] this->data;
+
+    this->data = newData;
+
+}
+
+inline float HashTable::getAlpha()
+{
+    return (float)this->getQuantity()/this->getSize();
 }
 
 /**

@@ -1,7 +1,9 @@
 //
-//  HashEntry.h
+//  HashEntry.hpp
+//  TabelaHash2
 //
-//  Created by Eiji Adachi Medeiros Barbosa
+//  Created by Eiji Adachi Medeiros Barbosa on 01/11/16.
+//  Copyright © 2016 Eiji Adachi Medeiros Barbosa. All rights reserved.
 //
 
 #ifndef HashEntry_h
